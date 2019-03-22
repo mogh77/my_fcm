@@ -11,7 +11,8 @@ import os
 import sys
 import math
 import pickle
-from sklearn.svm import SVC
+import skfuzzy as fuzz
+
 
 
 with tf.Graph().as_default():
@@ -53,9 +54,8 @@ with tf.Graph().as_default():
 
         # Train classifier svc
         print('Training classifier')
-        model = SVC(kernel='linear', probability=True)
-        model.fit(emb_array, labels)
-
+        model = fuzz.cluster.cmeans(emb_array, labels, 2, error=0.005, maxiter=1000, init=None)
+        
         # Create a list of class names
         class_names = [cls.name.replace('_', ' ') for cls in dataset]
 
